@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
+		<RepositoryUrl>https://github.com/4egod/Industrial.Protocols.HART.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/4egod/Industrial.Protocols.HART</PackageProjectUrl>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Industrial.IO" Version="2.20.10.17" />
+		<PackageReference Include="MicroExtensions" Version="0.20.10.17" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\Icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	  <None Include="..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<Version>2.$([System.DateTime]::UtcNow.ToString(yy)).$([System.DateTime]::UtcNow.Month).$([System.DateTime]::UtcNow.Day)</Version>
+		<Authors>Dmitry Tarasov</Authors>
+		<Product>Industrial Framework</Product>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>industrial</PackageTags>
+		<PackageIcon>Icon.png</PackageIcon>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<Copyright>Copyright © Dmitry Tarasov, 2020</Copyright>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="AfterBuild" Condition="'$(TargetFramework)'=='netstandard2.0'">
+		<Copy SourceFiles="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/$(ProjectName).dll" DestinationFiles="$(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/$(ProjectName).dll" />
+		<Message Text="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/$(ProjectName).dll -&gt; $(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/$(ProjectName).dll" Importance="high" />
+
+		<Copy SourceFiles="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/le/$(ProjectName).pe" DestinationFiles="$(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/le/$(ProjectName).pe" />
+		<Message Text="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/le/$(ProjectName).pe -&gt; $(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/le/$(ProjectName).pe" Importance="high" />
+		<Copy SourceFiles="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/le/$(ProjectName).pdbx" DestinationFiles="$(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/le/$(ProjectName).pdbx" />
+		<Message Text="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/le/$(ProjectName).pdbx -&gt; $(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/le/$(ProjectName).pdbx" Importance="high" />
+
+		<Copy SourceFiles="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/be/$(ProjectName).pe" DestinationFiles="$(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/be/$(ProjectName).pe" />
+		<Message Text="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/be/$(ProjectName).pe -&gt; $(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/be/$(ProjectName).pe" Importance="high" />
+		<Copy SourceFiles="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/be/$(ProjectName).pdbx" DestinationFiles="$(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/be/$(ProjectName).pdbx" />
+		<Message Text="$(SolutionDir)MF/$(ProjectName)/bin/$(ConfigurationName)/be/$(ProjectName).pdbx -&gt; $(ProjectDir)/bin/$(ConfigurationName)/lib/netmf43/be/$(ProjectName).pdbx" Importance="high" />
+	</Target>
+
+	<Target Name="CustomTargetName" AfterTargets="Pack">
+		<Exec Command="pwsh $(SolutionDir)Build.ps1 -cfg $(Configuration)" />
+	</Target>
+
+</Project>

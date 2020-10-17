@@ -1,0 +1,66 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Industrial.Protocols.HART</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Industrial.Protocols.HART</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D4DC3FA-DE20-4A5A-A77C-E896363026C8}</ProjectGuid>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+    <Version>2.$([System.DateTime]::UtcNow.ToString(yy)).$([System.DateTime]::UtcNow.Month).$([System.DateTime]::UtcNow.Day)</Version>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Industrial.Protocols.HART\Address.cs">
+      <Link>Address.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Industrial.Protocols.HART\BaseCommand.cs">
+      <Link>BaseCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Industrial.Protocols.HART\BaseDevice.cs">
+      <Link>BaseDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Industrial.Protocols.HART\FrameType.cs">
+      <Link>FrameType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Industrial.Protocols.HART\PollingAddress.cs">
+      <Link>PollingAddress.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Industrial.IO, Version=2.20.10.17, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Industrial.IO.2.20.10.17\lib\netmf43\Industrial.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native" />
+    <Reference Include="Mx, Version=0.20.10.17, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MicroExtensions.0.20.10.17\lib\netmf43\Mx.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <WriteLinesToFile File="$(ProjectDir)Properties\AssemblyInfo.cs" Lines="[assembly: System.Reflection.AssemblyVersion(&quot;$(Version)&quot;)]&#xD;&#xA;[assembly: System.Reflection.AssemblyFileVersion(&quot;$(Version)&quot;)]&#xD;&#xA;" Overwrite="true" />
+  </Target>
+  <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
+  <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
